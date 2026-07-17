@@ -37,6 +37,14 @@
 
     <section class="panel">
       <div class="section-head">
+        <div><p class="eyebrow">HARCAMA KLASÖRLERİ</p><h2>Harcama Grupları</h2><p class="muted">Tatil, etkinlik, proje veya özel dönem harcamalarını tek toplamda izle.</p></div>
+        <button id="addGroupBtn">+ Harcama grubu</button>
+      </div>
+      <div id="expenseGroups" class="expense-groups"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
         <div><p class="eyebrow">HESAPLAR</p><h2>Gelir ve Gider Kayıtları</h2></div>
         <div class="search-wrap"><input id="searchInput" placeholder="Açıklama veya kategori ara..."></div>
       </div>
@@ -55,17 +63,6 @@
     </section>
   </main>
 
-  <template id="transactionTemplate">
-    <div class="transaction-row">
-      <input class="tx-date" type="date" aria-label="Tarih">
-      <input class="tx-title" placeholder="İşlem açıklaması" aria-label="Açıklama">
-      <select class="tx-type" aria-label="Tür"><option value="expense">Gider</option><option value="income">Gelir</option></select>
-      <select class="tx-category" aria-label="Kategori"></select>
-      <input class="tx-amount" type="number" min="0" step="0.01" placeholder="0,00" aria-label="Tutar">
-      <button class="delete icon-btn" title="Sil">×</button>
-    </div>
-  </template>
-
   <dialog id="cardDialog">
     <form id="cardForm" method="dialog">
       <h3>Kredi kartı ekle</h3>
@@ -74,6 +71,22 @@
       <label>Limit<input name="limit" type="number" min="0" step="0.01"></label>
       <label>Son ödeme tarihi<input name="dueDate" type="date"></label>
       <div class="dialog-actions"><button value="cancel" class="secondary">Vazgeç</button><button value="default">Kaydet</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="groupDialog" class="wide-dialog">
+    <form id="groupForm" method="dialog">
+      <input type="hidden" name="groupId">
+      <div class="section-head dialog-title"><div><p class="eyebrow">HARCAMA GRUBU</p><h3 id="groupDialogTitle">Yeni harcama grubu</h3></div><button type="button" id="closeGroupDialog" class="icon-btn">×</button></div>
+      <div class="group-fields">
+        <label>Grup adı<input name="name" required placeholder="Örn. 2026 Haziran Tatili"></label>
+        <label>Başlangıç tarihi<input name="startDate" type="date"></label>
+        <label>Bitiş tarihi<input name="endDate" type="date"></label>
+        <label>Not<input name="note" placeholder="İsteğe bağlı açıklama"></label>
+      </div>
+      <div class="group-items-head"><div><h3>Harcama detayları</h3><p class="muted">Her satır doldukça altta yeni boş satır açılır.</p></div><strong id="groupRunningTotal">₺0</strong></div>
+      <div id="groupItems" class="group-items"></div>
+      <div class="dialog-actions"><button type="button" id="deleteGroupBtn" class="danger-button">Grubu sil</button><span class="dialog-spacer"></span><button type="button" id="cancelGroupBtn" class="secondary">Vazgeç</button><button type="submit">Kaydet</button></div>
     </form>
   </dialog>
 
