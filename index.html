@@ -1,20 +1,82 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0f172a" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
   <title>Kişisel Finans Paneli</title>
-  <style>
-    :root {
-      --bg: #f4f7fb;
-      --surface: #ffffff;
-      --surface-2: #f8fafc;
-      --text: #0f172a;
-      --muted: #64748b;
-      --line: #e2e8f0;
-      --primary: #2563eb;
-      --primary-soft: #dbeafe;
-      --success: #15803d;
-      --success-soft: #dcfce7;
-      --danger: #
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">KİŞİSEL FİNANS</p>
+      <h1>Finans Panelim</h1>
+      <p class="muted">Gelir, gider, hesap ve borçlarını tek ekrandan yönet.</p>
+    </div>
+    <div class="toolbar">
+      <input id="monthFilter" type="month" aria-label="Ay filtresi">
+      <button id="exportBtn" class="secondary">Veriyi dışa aktar</button>
+      <label class="secondary file-label">İçe aktar<input id="importInput" type="file" accept="application/json" hidden></label>
+    </div>
+  </header>
+
+  <main>
+    <section class="summary-grid" id="summaryGrid"></section>
+
+    <section class="panel net-panel">
+      <div class="section-head">
+        <div><p class="eyebrow">GENEL DURUM</p><h2>Net Varlık Özeti</h2></div>
+        <button id="addCardBtn">+ Kredi kartı ekle</button>
+      </div>
+      <div class="net-layout">
+        <div class="net-number"><span>Net varlık</span><strong id="netWorth">₺0</strong><small>Toplam hesap bakiyesi − kart borçları</small></div>
+        <div id="creditCards" class="credit-cards"></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head">
+        <div><p class="eyebrow">HESAPLAR</p><h2>Gelir ve Gider Kayıtları</h2></div>
+        <div class="search-wrap"><input id="searchInput" placeholder="Açıklama veya kategori ara..."></div>
+      </div>
+      <div id="accounts" class="accounts"></div>
+    </section>
+
+    <section class="two-column">
+      <section class="panel">
+        <div class="section-head"><div><p class="eyebrow">AYLIK TOPLAM</p><h2>Kategori Özeti</h2></div></div>
+        <div id="categorySummary" class="category-summary"></div>
+      </section>
+      <section class="panel">
+        <div class="section-head"><div><p class="eyebrow">BÜTÇE</p><h2>Aylık Harcama Planı</h2></div><button id="addBudgetBtn">+ Kategori</button></div>
+        <div id="budgets" class="budget-list"></div>
+      </section>
+    </section>
+  </main>
+
+  <template id="transactionTemplate">
+    <div class="transaction-row">
+      <input class="tx-date" type="date" aria-label="Tarih">
+      <input class="tx-title" placeholder="İşlem açıklaması" aria-label="Açıklama">
+      <select class="tx-type" aria-label="Tür"><option value="expense">Gider</option><option value="income">Gelir</option></select>
+      <select class="tx-category" aria-label="Kategori"></select>
+      <input class="tx-amount" type="number" min="0" step="0.01" placeholder="0,00" aria-label="Tutar">
+      <button class="delete icon-btn" title="Sil">×</button>
+    </div>
+  </template>
+
+  <dialog id="cardDialog">
+    <form id="cardForm" method="dialog">
+      <h3>Kredi kartı ekle</h3>
+      <label>Kart adı<input name="name" required placeholder="Örn. Worldcard"></label>
+      <label>Güncel borç<input name="debt" type="number" min="0" step="0.01" required></label>
+      <label>Limit<input name="limit" type="number" min="0" step="0.01"></label>
+      <label>Son ödeme tarihi<input name="dueDate" type="date"></label>
+      <div class="dialog-actions"><button value="cancel" class="secondary">Vazgeç</button><button value="default">Kaydet</button></div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
